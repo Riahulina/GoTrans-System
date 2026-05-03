@@ -297,8 +297,8 @@
                 </ul>
 
                 <div class="d-flex gap-2">
-                    <a href="#" class="btn btn-outline-light">Sign In</a>
-                    <a href="#" class="btn btn-primary">Sign Up</a>
+                    <a href="{{ route('login') }}" class="btn btn-outline-light">Sign In</a>
+                    <a href="{{ route('register') }}" class="btn btn-primary">Sign Up</a>
                 </div>
 
             </div>
