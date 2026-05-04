@@ -22,6 +22,12 @@
     background-color: #1b263b;
     color: white;
     border-radius: 8px;
+    border: none;
+}
+
+.btn-auth:hover {
+    background-color: #0d1b2a;
+    color: white;
 }
 </style>
 
@@ -44,36 +50,69 @@
 
                     <h3 class="text-center mb-3 fw-bold">Sign Up</h3>
 
-                    <form method="POST" action="{{ route('register.process') }}">
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            {{ $errors->first() }}
+                        </div>
+                    @endif
+
+                    <form method="POST" action="{{ route('register') }}">
                         @csrf
 
                         <div class="mb-3">
                             <label>Nama Lengkap</label>
-                            <input type="text" class="form-control" placeholder="Nama lengkap">
+                            <input
+                                type="text"
+                                name="nama"
+                                class="form-control"
+                                placeholder="Nama lengkap"
+                                value="{{ old('nama') }}"
+                                required
+                            >
                         </div>
 
                         <div class="mb-3">
                             <label>Email</label>
-                            <input type="email" class="form-control" placeholder="Email">
+                            <input
+                                type="email"
+                                name="email"
+                                class="form-control"
+                                placeholder="Email"
+                                value="{{ old('email') }}"
+                                required
+                            >
                         </div>
 
                         <div class="mb-3">
                             <label>Password</label>
-                            <input type="password" class="form-control" placeholder="Password">
+                            <input
+                                type="password"
+                                name="password"
+                                class="form-control"
+                                placeholder="Password"
+                                required
+                            >
                         </div>
 
                         <div class="mb-3">
                             <label>Konfirmasi Password</label>
-                            <input type="password" class="form-control" placeholder="Ulangi password">
+                            <input
+                                type="password"
+                                name="password_confirmation"
+                                class="form-control"
+                                placeholder="Ulangi password"
+                                required
+                            >
                         </div>
 
-                        <button class="btn btn-auth w-100 mb-3">Daftar</button>
+                        <button type="submit" class="btn btn-auth w-100 mb-3">
+                            Daftar
+                        </button>
 
-                        <p class="text-center">
+                        <p class="text-center mb-0">
                             Sudah punya akun?
                             <a href="{{ route('login') }}">Sign In</a>
                         </p>
-
                     </form>
 
                 </div>

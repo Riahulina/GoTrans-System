@@ -1,35 +1,41 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('landing');
-})->name('home');
+});
 
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/register', function () {
-    return view('auth.register');
-})->name('register');
 
-Route::post('/login', function (Request $request) {
-    return redirect()->route('user.home');
-})->name('login.process');
+Route::get('/user/home', function () {
+    return view('user.home');
+})->name('user.home');
 
-Route::post('/register', function (Request $request) {
-    return redirect()->route('user.home');
-})->name('register.process');
+Route::get('/pemesanan', function () {
+    return view('user.pemesanan');
+})->name('pemesanan');
+Route::get('/aktivitas', function () {
+    return view('user.aktivitas');
+})->name('aktivitas');
 
-Route::get('/user/home', fn() => view('user.home'))->name('user.home');
+Route::get('/layanan', function () {
+    return view('user.layanan');
+})->name('layanan');
 
-Route::get('/user/layanan', fn() => view('user.layanan'))->name('layanan');
+Route::get('/user/profil', function () {
+    return view('user.profil');
+})->name('user.profil');
 
-Route::get('/user/pemesanan', fn() => view('user.pemesanan'))->name('pemesanan');
 
-Route::get('/user/search', fn() => view('user.search'))->name('search');
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
-Route::get('/user/profil', fn() => view('user.profil'))->name('profil');
-
-Route::get('/user/aktivitas', fn() => view('user.aktivitas'))->name('aktivitas');
+require __DIR__ . '/auth.php';

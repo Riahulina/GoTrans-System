@@ -26,10 +26,12 @@
     background-color: #1b263b;
     color: white;
     border-radius: 8px;
+    border: none;
 }
 
 .btn-auth:hover {
     background-color: #0d1b2a;
+    color: white;
 }
 </style>
 
@@ -52,26 +54,47 @@
 
                     <h3 class="auth-title mb-3 text-center">Sign In</h3>
 
-                    <form method="POST" action="{{ route('login.process') }}">
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            {{ $errors->first() }}
+                        </div>
+                    @endif
+
+                    <form method="POST" action="{{ route('login') }}">
                         @csrf
 
                         <div class="mb-3">
                             <label>Email</label>
-                            <input type="email" class="form-control" placeholder="Masukkan email">
+                            <input
+                                type="email"
+                                name="email"
+                                class="form-control"
+                                placeholder="Masukkan email"
+                                value="{{ old('email') }}"
+                                required
+                                autofocus
+                            >
                         </div>
 
                         <div class="mb-3">
                             <label>Password</label>
-                            <input type="password" class="form-control" placeholder="Masukkan password">
+                            <input
+                                type="password"
+                                name="password"
+                                class="form-control"
+                                placeholder="Masukkan password"
+                                required
+                            >
                         </div>
 
-                        <button class="btn btn-auth w-100 mb-3">Masuk</button>
+                        <button type="submit" class="btn btn-auth w-100 mb-3">
+                            Masuk
+                        </button>
 
-                        <p class="text-center">
+                        <p class="text-center mb-0">
                             Belum punya akun?
                             <a href="{{ route('register') }}">Daftar</a>
                         </p>
-
                     </form>
 
                 </div>

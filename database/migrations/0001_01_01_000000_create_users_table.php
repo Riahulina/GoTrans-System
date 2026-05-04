@@ -20,6 +20,10 @@ return new class extends Migration
 
             $table->enum('role', ['user', 'driver', 'admin'])->default('user');
             $table->string('no_hp')->nullable();
+
+            // ✅ FOTO PROFILE (TAMBAHAN BARU)
+            $table->string('foto')->nullable();
+
             $table->enum('status', ['aktif', 'nonaktif'])->default('aktif');
 
             $table->rememberToken();
