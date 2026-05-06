@@ -1,0 +1,94 @@
+body {
+    background-color: #0b1220;
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.container {
+    padding: 20px;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.map-box {
+    background: linear-gradient(145deg, #0f1c33, #0a1629);
+    border-radius: 20px;
+    height: 220px;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.map-placeholder {
+    position: absolute;
+    border: 2px dashed white;
+    width: 80%;
+    height: 60%;
+    top: 20%;
+    left: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.5;
+}
+
+.name {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.rating {
+    color: #ccc;
+}
+
+.label {
+    margin-top: 15px;
+    color: #aaa;
+}
+
+.note {
+    font-size: 22px;
+    margin-top: 5px;
+}
+
+.info {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.btn {
+    width: 100%;
+    padding: 15px;
+    border-radius: 12px;
+    border: none;
+    font-size: 16px;
+    margin-top: 15px;
+}
+
+.btn-success {
+    background-color: #0f5132;
+    color: #a7f3d0;
+}
+
+.btn-danger {
+    background-color: #7f1d1d;
+    color: #fecaca;
+}
+
+.history-item {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    padding: 12px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(10px);
+    transition: 0.2s;
+}
+
+.history-item:hover {
+    background: rgba(255,255,255,0.1);
+    transform: scale(1.02);
+}

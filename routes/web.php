@@ -38,4 +38,29 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::prefix('driver')->group(function () {
+    Route::get('/ontrip', fn() => view('driver_ontrip'))->name('driver.ontrip');
+});
+
+Route::prefix('driver')->group(function () {
+
+    // MODE OFFLINE
+    Route::get('/offline', fn() => view('driver_offline'))->name('driver.offline');
+
+    // PENUMPANG DITEMUKAN
+    Route::get('/', fn() => view('driver'))->name('driver.home');
+
+    // DALAM PERJALANAN
+    Route::get('/ontrip', fn() => view('driver_ontrip'))->name('driver.ontrip');
+
+    // SELESAI
+    Route::get('/done', fn() => view('driver_done'))->name('driver.done');
+
+    // RATING
+    Route::get('/rating', fn() => view('driver_rating'))->name('driver.rating');
+
+    // RIWAYAT
+    Route::get('/history', fn() => view('driver_history'))->name('driver.history');
+});
+
 require __DIR__ . '/auth.php';
