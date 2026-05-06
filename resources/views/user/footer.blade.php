@@ -1,21 +1,20 @@
-<footer class="footer-user text-center">
-
-    <div class="container">
-        <p class="mb-1">© 2026 GoTrans. All rights reserved.</p>
-        <small class="text">Solusi Transportasi Modern</small>
-    </div>
-
+<footer class="text-center mt-5 py-4">
+    © 2026 GoTrans. All rights reserved.
 </footer>
 
-<style>
-.footer-user {
-    margin-top: 50px;
-    padding: 20px;
-    background: #0d1b2a;
-    color: white;
-}
 
-.footer-user small {
-    color: #bbb;
-}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<style>
+    footer {
+        background: #0d1b2a;
+        color: white;
+    }
+    .text-center {
+        text-align: center;
+        margin-top: auto;
+    }
 </style>
+</body>
+
+</html>

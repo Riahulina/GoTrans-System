@@ -2,96 +2,183 @@
 
 @section('content')
 
-<div class="container py-4">
+<!-- WRAPPER CENTER -->
+<div class="d-flex justify-content-center">
+<div class="layanan-container">
 
-    <h4 class="fw-bold mb-4">Aktivitas Perjalanan </h4>
+    <!-- HEADER -->
+    <div class="mb-4 fade-up text-center">
+        <h4 class="fw-bold">🚗 Aktivitas Perjalanan</h4>
+        <p class="text-muted">Riwayat perjalanan yang telah kamu lakukan</p>
+    </div>
 
-    <div id="historyList" class="history-list"></div>
+    <div class="row g-4">
+
+        <!-- ITEM 1 -->
+        <div class="col-md-6 fade-up">
+            <div class="service-card p-4 position-relative">
+
+                <span class="badge-custom bg-success">Selesai</span>
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+                        <h5 class="fw-bold mb-1">Medan → Binjai</h5>
+                        <p class="text-muted small mb-2">05 Mei 2026</p>
+
+                        <div class="price">
+                            Jarak: 12 KM • Durasi: 25 menit
+                        </div>
+                    </div>
+
+                    <div class="icon-box">🚗</div>
+
+                </div>
+
+                <div class="mt-3 d-flex justify-content-between align-items-center">
+                    <b class="text-primary">Rp 24.000</b>
+                    <button class="btn btn-main btn-sm">Detail</button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ITEM 2 -->
+        <div class="col-md-6 fade-up">
+            <div class="service-card p-4 position-relative">
+
+                <span class="badge-custom bg-danger">Dibatalkan</span>
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+                        <h5 class="fw-bold mb-1">Medan → Deli Serdang</h5>
+                        <p class="text-muted small mb-2">03 Mei 2026</p>
+
+                        <div class="price">
+                            Jarak: 8 KM • Durasi: -
+                        </div>
+                    </div>
+
+                    <div class="icon-box">🛺</div>
+
+                </div>
+
+                <div class="mt-3 d-flex justify-content-between align-items-center">
+                    <b class="text-secondary">-</b>
+                    <button class="btn btn-main btn-sm">Detail</button>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
 
 </div>
+</div>
 
+
+<!-- STYLE -->
 <style>
 
-/* LIST */
-.history-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+/* CONTAINER */
+.layanan-container {
+    max-width: 900px;
+    width: 100%;
 }
 
-/* ITEM */
-.history-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px;
+/* CARD */
+.service-card {
+    border-radius: 20px;
+    transition: 0.4s;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+/* HOVER */
+.service-card:hover {
+    transform: translateY(-10px) scale(1.02);
+
+}
+
+/* TEXT */
+.service-card:hover .text-muted {
+    color: #747070 !important;
+}
+
+/* ICON */
+.icon-box {
+    font-size: 30px;
+    background: #e9ecef;
+    width: 60px;
+    height: 60px;
     border-radius: 15px;
-    background: white;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.history-item:hover {
-    transform: translateY(-5px);
+/* BUTTON */
+.btn-main {
+    background: #1b263b;
+    color: white;
+    border-radius: 10px;
+    border: none;
 }
 
-/* ROUTE */
-.route small {
-    display: block;
+.btn-main:hover {
+    background: #415a77;
+}
+
+/* BADGE */
+.badge-custom {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    color: white;
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 20px;
 }
 
 /* PRICE */
 .price {
-    font-weight: bold;
-    color: #1b263b;
+    font-size: 13px;
 }
 
-/* STATUS */
-.status {
-    font-size: 11px;
-    padding: 4px 10px;
-    border-radius: 10px;
-    margin-top: 5px;
+/* ANIMATION */
+.fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: 0.6s;
 }
 
-.done {
-    background: #d4edda;
-    color: #155724;
+.fade-up.show {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 </style>
 
+
+<!-- SCRIPT -->
 <script>
+const elements = document.querySelectorAll('.fade-up');
 
-// AMBIL DATA
-let data = JSON.parse(localStorage.getItem("riwayat")) || [];
+function showOnScroll() {
+    elements.forEach((el, i) => {
+        const pos = el.getBoundingClientRect().top;
+        const screen = window.innerHeight;
 
-let html = "";
+        if (pos < screen - 100) {
+            setTimeout(() => {
+                el.classList.add('show');
+            }, i * 150);
+        }
+    });
+}
 
-// LOOP
-data.reverse().forEach(item => {
-
-    html += `
-        <div class="history-item">
-
-            <div class="route">
-                <small>${item.pickup}</small>
-                <small class="text-muted">${item.tujuan}</small>
-            </div>
-
-            <div class="text-end">
-                <div class="price">${item.harga}</div>
-                <small>${item.jarak} • ${item.waktu}</small>
-                <div class="status done">${item.status}</div>
-            </div>
-
-        </div>
-    `;
-});
-
-// TAMPILKAN
-document.getElementById("historyList").innerHTML = html;
-
+window.addEventListener('scroll', showOnScroll);
+window.addEventListener('load', showOnScroll);
 </script>
 
 @endsection

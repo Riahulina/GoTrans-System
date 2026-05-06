@@ -169,4 +169,4 @@ window.addEventListener('scroll', showOnScroll);
 window.addEventListener('load', showOnScroll);
 </script>
 
-@endsection
+@endsection ('user.footer')
