@@ -3,6 +3,14 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/driver/ontrip', function () {
+    return view('driver_ontrip');
+});
+
+Route::get('/driver/review-detail', function () {
+    return view('driver_review_detail');
+});
+
 Route::get('/', function () {
     return view('landing');
 });

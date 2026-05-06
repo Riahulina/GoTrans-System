@@ -63,10 +63,10 @@
         <!-- BUTTON -->
         <div class="p-4 border-t border-white/10">
 
-            <button onclick="goToDone()"
-    class="w-full py-4 rounded-2xl bg-white/10 text-white font-medium active:scale-95 transition">
-    Chat, Telepon dan Bantuan
-</button>
+            <button onclick="handleHelp(this)"
+                class="w-full py-4 rounded-2xl bg-white/10 text-white font-medium backdrop-blur-md active:scale-95 transition">
+                Chat, Telepon dan Bantuan
+            </button>
 
         </div>
 
@@ -76,16 +76,6 @@
 
 <!-- SCRIPT -->
 <script>
-function goToDone(){
-    const btn = event.target;
-    btn.innerText = "Menuju selesai...";
-    btn.disabled = true;
-
-    setTimeout(() => {
-        window.location.href = "/driver/done";
-    }, 1000);
-}
-</script>
 
 let distance = 5.6;
 let minutes = 12;
