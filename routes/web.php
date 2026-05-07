@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,8 +14,59 @@ Route::get('/', function () {
     return view('landing');
 });
 
+
 /*
 |--------------------------------------------------------------------------
+| Landing & Public
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/', fn() => view('landing'))->name('home');
+
+/*
+|--------------------------------------------------------------------------
+| AUTH ROUTES
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/login', fn() => view('auth.login'))->name('login');
+
+Route::post('/login', function (Request $request) {
+    return redirect()->route('user.home');
+})->name('login.process');
+
+Route::get('/register', fn() => view('auth.register'))->name('register');
+
+Route::post('/register', function (Request $request) {
+    return redirect()->route('user.home');
+})->name('register.process');
+
+
+
+/*
+|--------------------------------------------------------------------------
+| USER ROUTES
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('user')->name('user.')->group(function () {
+
+    Route::get('/home', fn() => view('user.home'))->name('home');
+
+    Route::get('/layanan', fn() => view('user.layanan'))->name('layanan');
+
+    Route::get('/aktivitas', fn() => view('user.aktivitas'))->name('aktivitas');
+
+    Route::get('/pemesanan', fn() => view('user.pemesanan'))->name('pemesanan');
+
+    Route::get('/search', fn() => view('user.search'))->name('search');
+
+    Route::get('/profil', fn() => view('user.profil'))->name('profil');
+});
+
+/*
+|--------------------------------------------------------------------------
+\
 | Dashboard
 |--------------------------------------------------------------------------
 */
@@ -66,11 +118,10 @@ Route::prefix('driver')->group(function () {
 
     Route::prefix('driver')->group(function () {
 
-    Route::get('/', fn() => view('driver'))->name('driver.home');
+        Route::get('/', fn() => view('driver'))->name('driver.home');
 
-    Route::get('/driver/offline', fn() => view('driver_offline'))->name('driver.offline');
-
-});
+        Route::get('/driver/offline', fn() => view('driver_offline'))->name('driver.offline');
+    });
 });
 
 /*
@@ -111,3 +162,26 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__ . '/auth.php';
+
+/*
+|--------------------------------------------------------------------------
+|  ADMIN ROUTES
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('admin')->name('admin.')->group(function () {
+
+    Route::get('/', fn() => view('admin.dashboard'))->name('dashboard');
+
+    Route::get('/driver', fn() => view('admin.driver'))->name('driver');
+
+    Route::get('/user', fn() => view('admin.user'))->name('user');
+
+    Route::get('/pembayaran', fn() => view('admin.pembayaran'))->name('pembayaran');
+
+    Route::get('/rating-feedback', fn() => view('admin.rating_feedback'))->name('rating_feedback');
+
+    Route::get('/pengaturan', fn() => view('admin.pengaturan'))->name('pengaturan');
+
+    Route::get('/pesanan', fn() => view('admin.pesanan'))->name('pesanan');
+});

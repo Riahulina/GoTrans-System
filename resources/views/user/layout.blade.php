@@ -6,7 +6,7 @@
     <title>GoTrans</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Bootstrap -->
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Font -->
@@ -14,20 +14,27 @@
         rel="stylesheet">
 
     <style>
+        html,
         body {
-            font-family: 'Poppins', sans-serif !important;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
             background: #f8f9fa;
-            padding-top: 80px; /* FIX NAVBAR FIXED */
         }
 
-        /* ===== NAVBAR ===== */
+        body {
+            padding-top: 80px;
+        }
+
+        /* NAVBAR */
         .navbar {
             background-color: #0d1b2a;
-            transition: 0.4s;
-            z-index: 9999;        /* FIX CLICK ISSUE */
-            position: fixed;      /* FIX STICKY */
+            position: fixed;
             top: 0;
+            left: 0;
             width: 100%;
+            z-index: 999999;
+            transition: 0.3s;
         }
 
         .navbar.scrolled {
@@ -37,7 +44,7 @@
 
         .navbar-brand {
             color: white !important;
-            font-weight: bold;
+            font-weight: 700;
         }
 
         .nav-link {
@@ -52,7 +59,7 @@
 
         .nav-link::after {
             content: '';
-            width: 0%;
+            width: 0;
             height: 2px;
             background: white;
             position: absolute;
@@ -65,14 +72,8 @@
             width: 100%;
         }
 
-        /* SEARCH */
-        .form-control {
-            border-radius: 20px;
-        }
-
-        /* BUTTON */
+        .form-control,
         .btn-outline-light {
-            transition: 0.3s;
             border-radius: 20px;
         }
 
@@ -82,64 +83,78 @@
             transform: scale(1.05);
         }
 
-        /* DROPDOWN */
         .dropdown-menu {
+            z-index: 9999999 !important;
             border-radius: 12px;
             border: none;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
         }
 
-        /* CONTENT */
         .main-container {
+            margin-top: 80px;
+            min-height: 100vh;
             padding: 40px 20px;
+            position: relative;
+            z-index: 1;
         }
     </style>
+
+    @stack('styles')
 </head>
 
 <body>
 
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg">
-
         <div class="container">
 
-            <a class="navbar-brand" href="{{ url('/user/home') }}">GoTrans</a>
+            <a class="navbar-brand" href="{{ route('home') }}">GoTrans</a>
 
-            <button class="navbar-toggler bg-light" data-bs-toggle="collapse" data-bs-target="#nav">
+            <button class="navbar-toggler bg-light" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#nav">
                 ☰
             </button>
 
             <div class="collapse navbar-collapse" id="nav">
 
-                <!-- MENU -->
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/user/home') }}">Beranda</a>
+                        <a class="nav-link" href="{{ route('home') }}">Beranda</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/layanan') }}">Layanan</a>
+                        <a class="nav-link" href="{{ route('user.layanan') }}">Layanan</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/aktivitas') }}">Aktivitas</a>
+                        <a class="nav-link" href="{{ route('user.aktivitas') }}">Aktivitas</a>
                     </li>
                 </ul>
 
-                <!-- SEARCH -->
                 <form class="d-flex me-3">
-                    <input class="form-control me-2" placeholder="Cari...">
-                    <button class="btn btn-outline-light">Search</button>
+                    <input class="form-control me-2" type="search" placeholder="Cari...">
+                    <button class="btn btn-outline-light" type="submit">Search</button>
                 </form>
 
-                <!-- PROFILE -->
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle"
+                            href="#"
+                            role="button"
+                            data-bs-toggle="dropdown">
                             👤 Profile
                         </a>
 
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="{{ url('/user/profil') }}">Profil</a></li>
-                            <li><a class="dropdown-item text-danger" href="#">Logout</a></li>
+                            <li>
+                                <a class="dropdown-item" href="{{ route('user.profil') }}">
+                                    Profil
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item text-danger" href="#">
+                                    Logout
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 </ul>
@@ -159,12 +174,16 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        window.addEventListener('scroll', function () {
+        window.addEventListener('scroll', function() {
             const navbar = document.querySelector('.navbar');
-            navbar.classList.toggle('scrolled', window.scrollY > 50);
+
+            if (navbar) {
+                navbar.classList.toggle('scrolled', window.scrollY > 50);
+            }
         });
     </script>
 
+    @stack('scripts')
 </body>
 
 </html>
