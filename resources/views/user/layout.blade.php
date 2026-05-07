@@ -17,12 +17,17 @@
         body {
             font-family: 'Poppins', sans-serif !important;
             background: #f8f9fa;
+            padding-top: 80px; /* FIX NAVBAR FIXED */
         }
 
-        /* ===== NAVBAR (SAMA SEPERTI LANDING) ===== */
+        /* ===== NAVBAR ===== */
         .navbar {
             background-color: #0d1b2a;
             transition: 0.4s;
+            z-index: 9999;        /* FIX CLICK ISSUE */
+            position: fixed;      /* FIX STICKY */
+            top: 0;
+            width: 100%;
         }
 
         .navbar.scrolled {
@@ -45,7 +50,6 @@
             color: white !important;
         }
 
-        /* underline animasi */
         .nav-link::after {
             content: '';
             width: 0%;
@@ -95,7 +99,8 @@
 <body>
 
     <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-lg fixed-top">
+    <nav class="navbar navbar-expand-lg">
+
         <div class="container">
 
             <a class="navbar-brand" href="{{ url('/user/home') }}">GoTrans</a>
@@ -144,7 +149,7 @@
     </nav>
 
     <!-- CONTENT -->
-    <div class="main-container p-0" style="margin-top:80px;">
+    <div class="main-container p-0">
         @yield('content')
     </div>
 
@@ -154,8 +159,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // NAVBAR SCROLL EFFECT (SAMA KAYAK LANDING)
-        window.addEventListener('scroll', function() {
+        window.addEventListener('scroll', function () {
             const navbar = document.querySelector('.navbar');
             navbar.classList.toggle('scrolled', window.scrollY > 50);
         });

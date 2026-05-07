@@ -63,6 +63,14 @@ Route::prefix('driver')->group(function () {
     Route::get('/history', fn() => view('driver_history'))->name('driver.history');
 
     Route::get('/review-detail', fn() => view('driver_review_detail'));
+
+    Route::prefix('driver')->group(function () {
+
+    Route::get('/', fn() => view('driver'))->name('driver.home');
+
+    Route::get('/driver/offline', fn() => view('driver_offline'))->name('driver.offline');
+
+});
 });
 
 /*

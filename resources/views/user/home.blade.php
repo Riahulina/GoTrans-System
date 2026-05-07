@@ -4,7 +4,7 @@
 
 <!-- HERO FULL -->
 <section class="hero-main">
-    <div class="container-fluid px-0 ">
+    <div class="container-fluid px-0">
         <div class="row align-items-center h-100 px-5">
 
             <!-- TEXT -->
@@ -15,7 +15,7 @@
 
                 <p class="hero-text">
                     Nikmati pengalaman perjalanan yang aman, cepat, dan terpercaya
-dengan layanan transportasi digital yang dirancang untuk Anda.
+                    dengan layanan transportasi digital yang dirancang untuk Anda.
                 </p>
 
                 <div class="mt-4">
@@ -34,16 +34,13 @@ dengan layanan transportasi digital yang dirancang untuk Anda.
     </div>
 </section>
 
-
 <!-- LAYANAN -->
 <section id="layanan" class="section-white">
     <div class="container">
 
         <div class="text-center mb-5 fade-up">
             <h2 class="section-title">Layanan Kami</h2>
-            <p class="section-subtitle">
-                Pilih layanan sesuai kebutuhan perjalanan Anda
-            </p>
+            <p class="section-subtitle">Pilih layanan sesuai kebutuhan perjalanan Anda</p>
         </div>
 
         <div class="row g-4 text-center">
@@ -57,7 +54,6 @@ dengan layanan transportasi digital yang dirancang untuk Anda.
 
             <div class="col-md-3 fade-up">
                 <div class="service-card">
-
                     <div class="service-icon">
                         {{ $item[2] }}
                     </div>
@@ -68,7 +64,6 @@ dengan layanan transportasi digital yang dirancang untuk Anda.
                     <a href="{{ route('layanan') }}" class="btn btn-dark btn-sm">
                         Pesan
                     </a>
-
                 </div>
             </div>
 
@@ -78,7 +73,6 @@ dengan layanan transportasi digital yang dirancang untuk Anda.
 
     </div>
 </section>
-
 
 <!-- ABOUT -->
 <section class="section-light">
@@ -107,7 +101,6 @@ dengan layanan transportasi digital yang dirancang untuk Anda.
     </div>
 </section>
 
-
 <!-- CTA -->
 <section class="section-white text-center">
     <div class="container fade-up">
@@ -120,18 +113,21 @@ dengan layanan transportasi digital yang dirancang untuk Anda.
     </div>
 </section>
 
-
-<!-- STYLE -->
+<!-- STYLE FIX NAVBAR + HERO -->
 <style>
 
-/* RESET */
+/* FIX NAVBAR BIAR TIDAK KETIMPA */
 body {
     margin: 0;
+    padding-top: 70px; /* penting untuk navbar fixed */
 }
 
-.main-container {
-    margin-top: 0 !important; 
-    /* sesuai tinggi navbar */
+/* NAVBAR HARUS DI ATAS SEMUA */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 9999;
 }
 
 /* HERO */
@@ -145,6 +141,7 @@ body {
     border-bottom-right-radius: 80px;
     position: relative;
     overflow: hidden;
+    z-index: 1; /* penting biar tidak nutup navbar */
 }
 
 /* BACKGROUND EFFECT */
@@ -176,7 +173,6 @@ body {
     animation: float 4s ease-in-out infinite;
 }
 
-/* FLOAT ANIMATION */
 @keyframes float {
     0% { transform: translateY(0px);}
     50% { transform: translateY(-15px);}
@@ -194,14 +190,6 @@ body {
     background: #f8f9fa;
 }
 
-.section-title {
-    font-weight: 700;
-}
-
-.section-subtitle {
-    color: #6c757d;
-}
-
 /* CARD */
 .service-card {
     background: white;
@@ -217,11 +205,6 @@ body {
     color: white;
 }
 
-.service-card:hover p {
-    color: #ddd;
-}
-
-/* ICON */
 .service-icon {
     font-size: 32px;
     background: #f1f3f5;
@@ -243,11 +226,11 @@ body {
     font-weight: bold;
 }
 
-/* ABOUT SHAPE */
+/* SHAPE */
 .about-shape {
     width: 100%;
     height: 260px;
-    background: linear-gradient(135deg, #1b263b, #415a77), 
+    background: linear-gradient(135deg, #1b263b, #415a77),
     url('https://images.unsplash.com/photo-1689339834923-6c1bde0970a2') center/cover;
     border-radius: 20px;
 }
@@ -260,11 +243,7 @@ body {
     padding: 10px 25px;
 }
 
-.btn-main:hover {
-    background: #415a77;
-}
-
-/* ANIMATION SCROLL */
+/* ANIMATION */
 .fade-up {
     opacity: 0;
     transform: translateY(30px);
@@ -277,7 +256,6 @@ body {
 }
 
 </style>
-
 
 <!-- SCRIPT -->
 <script>
@@ -300,4 +278,4 @@ window.addEventListener('scroll', showOnScroll);
 window.addEventListener('load', showOnScroll);
 </script>
 
-@endsection 
+@endsection
