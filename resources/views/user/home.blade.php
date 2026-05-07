@@ -247,7 +247,8 @@ body {
 .about-shape {
     width: 100%;
     height: 260px;
-    background: linear-gradient(135deg, #1b263b, #415a77);
+    background: linear-gradient(135deg, #1b263b, #415a77), 
+    url('https://images.unsplash.com/photo-1689339834923-6c1bde0970a2') center/cover;
     border-radius: 20px;
 }
 
