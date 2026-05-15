@@ -6,21 +6,29 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->id(); // id_order
+            $table->id();
 
+            // relasi
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('driver_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('driver_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('kendaraan_id')->constrained()->onDelete('cascade');
 
+            // alamat
             $table->text('alamat_asal');
             $table->text('alamat_tujuan');
 
+            // koordinat pickup
+            $table->decimal('pickup_lat', 10, 7);
+            $table->decimal('pickup_lng', 10, 7);
+
+            // koordinat tujuan
+            $table->decimal('tujuan_lat', 10, 7);
+            $table->decimal('tujuan_lng', 10, 7);
+
+            // order info
             $table->decimal('jarak_km', 10, 2)->nullable();
             $table->decimal('harga', 12, 2)->nullable();
 
@@ -37,11 +45,8 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('order');
+        Schema::dropIfExists('orders');
     }
 };

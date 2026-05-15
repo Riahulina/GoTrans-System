@@ -20,7 +20,7 @@ class Rating extends Model
         return $this->belongsTo(Order::class);
     }
 
-        //Relasi ke User
+    //Relasi ke User
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -29,6 +29,6 @@ class Rating extends Model
     //Relasi ke Driver
     public function driver()
     {
-        return $this->belongsTo(Driver::class);
+        return $this->belongsTo(User::class, 'driver_id');
     }
 }

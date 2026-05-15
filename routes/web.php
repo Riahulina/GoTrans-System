@@ -1,46 +1,90 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
-/*
-|--------------------------------------------------------------------------
-| Landing & Public
-|--------------------------------------------------------------------------
-*/
+use App\Models\Order;
 
-Route::get('/', function () {
-    return view('landing');
-});
 
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
-| Landing & Public
+| PUBLIC / LANDING
 |--------------------------------------------------------------------------
 */
 
 Route::get('/', fn() => view('landing'))->name('home');
 
+
 /*
 |--------------------------------------------------------------------------
-| AUTH ROUTES
+| AUTH CUSTOM
 |--------------------------------------------------------------------------
 */
 
-Route::get('/login', fn() => view('auth.login'))->name('login');
+Route::get('/login', fn() => view('auth.login'))
+    ->name('login');
 
 Route::post('/login', function (Request $request) {
-    return redirect()->route('user.home');
+
+    $credentials = $request->validate([
+        'email' => ['required', 'email'],
+        'password' => ['required'],
+    ]);
+
+    // LOGIN
+    if (Auth::attempt($credentials)) {
+
+        $request->session()->regenerate();
+
+        // USER
+        if (Auth::user()->role === 'user') {
+
+            return redirect()->route('user.home');
+        }
+
+        // DRIVER
+        if (Auth::user()->role === 'driver') {
+
+            return redirect()->route('driver.home');
+        }
+
+        // ADMIN
+        if (Auth::user()->role === 'admin') {
+
+            return redirect()->route('admin.dashboard');
+        }
+    }
+
+    return back()->withErrors([
+        'email' => 'Email atau password salah',
+    ]);
 })->name('login.process');
 
-Route::get('/register', fn() => view('auth.register'))->name('register');
+
+Route::get('/register', fn() => view('auth.register'))
+    ->name('register');
 
 Route::post('/register', function (Request $request) {
+
     return redirect()->route('user.home');
 })->name('register.process');
 
+
+/*
+|--------------------------------------------------------------------------
+| DASHBOARD
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/dashboard', function () {
+
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
 
 
 /*
@@ -49,139 +93,217 @@ Route::post('/register', function (Request $request) {
 |--------------------------------------------------------------------------
 */
 
-Route::prefix('user')->name('user.')->group(function () {
+Route::prefix('user')
+    ->middleware(['auth', 'role:user'])
+    ->group(function () {
 
-    Route::get('/home', fn() => view('user.home'))->name('home');
+        Route::get('/home', fn() => view('user.home'))
+            ->name('user.home');
 
-    Route::get('/layanan', fn() => view('user.layanan'))->name('layanan');
+        Route::get('/layanan', fn() => view('user.layanan'))
+            ->name('user.layanan');
 
-    Route::get('/aktivitas', fn() => view('user.aktivitas'))->name('aktivitas');
 
-    Route::get('/pemesanan', fn() => view('user.pemesanan'))->name('pemesanan');
 
-    Route::get('/search', fn() => view('user.search'))->name('search');
+        Route::get('/aktivitas', [UserController::class, 'aktivitas'])
+            ->middleware(['auth', 'role:user'])
+            ->name('user.aktivitas');
 
-    Route::get('/profil', fn() => view('user.profil'))->name('profil');
-});
+        Route::get('/pemesanan', [UserController::class, 'pesan'])
+            ->name('user.pemesanan');
 
-/*
-|--------------------------------------------------------------------------
-\
-| Dashboard
-|--------------------------------------------------------------------------
-*/
+        Route::get('/search', fn() => view('user.search'))
+            ->name('user.search');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-/*
-|--------------------------------------------------------------------------
-| User Routes
-|--------------------------------------------------------------------------
-*/
-
-Route::prefix('user')->group(function () {
-
-    Route::get('/home', fn() => view('user.home'))->name('user.home');
-
-    Route::get('/pemesanan', fn() => view('user.pemesanan'))->name('pemesanan');
-
-    Route::get('/aktivitas', fn() => view('user.aktivitas'))->name('aktivitas');
-
-    Route::get('/layanan', fn() => view('user.layanan'))->name('layanan');
-
-    Route::get('/profil', fn() => view('user.profil'))->name('user.profil');
-});
-
-/*
-|--------------------------------------------------------------------------
-| Driver Routes
-|--------------------------------------------------------------------------
-*/
-
-Route::prefix('driver')->group(function () {
-
-    Route::get('/', fn() => view('driver'))->name('driver.home');
-
-    Route::get('/offline', fn() => view('driver_offline'))->name('driver.offline');
-
-    Route::get('/ontrip', fn() => view('driver_ontrip'))->name('driver.ontrip');
-
-    Route::get('/done', fn() => view('driver_done'))->name('driver.done');
-
-    Route::get('/rating', fn() => view('driver_rating'))->name('driver.rating');
-
-    Route::get('/history', fn() => view('driver_history'))->name('driver.history');
-
-    Route::get('/review-detail', fn() => view('driver_review_detail'));
-
-    Route::prefix('driver')->group(function () {
-
-        Route::get('/', fn() => view('driver'))->name('driver.home');
-
-        Route::get('/driver/offline', fn() => view('driver_offline'))->name('driver.offline');
+        Route::get('/profil', fn() => view('user.profil'))
+            ->name('user.profil');
     });
-});
+
 
 /*
 |--------------------------------------------------------------------------
-| Admin Routes
+| DRIVER ROUTES
 |--------------------------------------------------------------------------
 */
 
-Route::prefix('admin')->group(function () {
+Route::prefix('driver')
+    ->middleware(['auth', 'role:driver'])
+    ->name('driver.')
+    ->group(function () {
 
-    Route::get('/', fn() => view('admin.dashboard'));
+        Route::get(
+            '/',
+            [OrderController::class, 'driverHome']
+        )->name('home');
 
-    Route::get('/dashboard', fn() => view('admin.dashboard'))->name('admin.dashboard');
+        Route::get(
+            '/order/{id}',
+            [OrderController::class, 'detailOrder']
+        )->name('order.detail');
 
-    Route::get('/driver', fn() => view('admin.driver'))->name('admin.driver');
+        Route::get(
+            '/offline',
+            [OrderController::class, 'offline']
+        )->name('offline');
 
-    Route::get('/user', fn() => view('admin.user'))->name('admin.user');
+        Route::get('/ontrip/{id}', function ($id) {
 
-    Route::get('/pembayaran', fn() => view('admin.pembayaran'))->name('admin.pembayaran');
+            $order = Order::with('user')->findOrFail($id);
 
-    Route::get('/rating-feedback', fn() => view('admin.rating_feedback'))->name('admin.rating_feedback');
+            return view('driver.ontrip', compact('order'));
+        })->name('ontrip');
 
-    Route::get('/pengaturan', fn() => view('admin.pengaturan'))->name('admin.pengaturan');
 
-    Route::get('/pesanan', fn() => view('admin.pesanan'))->name('admin.pesanan');
-});
+        Route::get(
+            '/history',
+            [OrderController::class, 'history']
+        )->name('history');
+
+        Route::get(
+            '/rating',
+            fn() => view('driver.rating')
+        )->name('rating');
+    });
+
+Route::get(
+    '/driver/done/{id}',
+    [OrderController::class, 'done']
+);
+
+
 
 /*
 |--------------------------------------------------------------------------
-| Auth Routes
+| ADMIN ROUTES
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('admin')
+    ->middleware(['auth', 'role:admin'])
+    ->group(function () {
+
+        Route::get(
+            '/',
+            fn() => view('admin.dashboard')
+        )->name('admin.dashboard');
+
+        Route::get(
+            '/dashboard',
+            fn() => view('admin.dashboard')
+        )->name('admin.dashboard');
+
+        Route::get(
+            '/driver',
+            fn() => view('admin.driver')
+        )->name('admin.driver');
+
+        Route::get(
+            '/user',
+            fn() => view('admin.user')
+        )->name('admin.user');
+
+        Route::get(
+            '/pembayaran',
+            fn() => view('admin.pembayaran')
+        )->name('admin.pembayaran');
+
+        Route::get(
+            '/rating-feedback',
+            fn() => view('admin.rating_feedback')
+        )->name('admin.rating_feedback');
+
+        Route::get(
+            '/pengaturan',
+            fn() => view('admin.pengaturan')
+        )->name('admin.pengaturan');
+
+        Route::get(
+            '/pesanan',
+            fn() => view('admin.pesanan')
+        )->name('admin.pesanan');
+    });
+
+
+/*
+|--------------------------------------------------------------------------
+| PROFILE
 |--------------------------------------------------------------------------
 */
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get(
+        '/profile',
+        [ProfileController::class, 'edit']
+    )->name('profile.edit');
+
+    Route::patch(
+        '/profile',
+        [ProfileController::class, 'update']
+    )->name('profile.update');
+
+    Route::delete(
+        '/profile',
+        [ProfileController::class, 'destroy']
+    )->name('profile.destroy');
 });
 
-require __DIR__ . '/auth.php';
 
 /*
 |--------------------------------------------------------------------------
-|  ADMIN ROUTES
+| ORDER
 |--------------------------------------------------------------------------
 */
 
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::post(
+    '/order',
+    [OrderController::class, 'store']
+)->middleware('auth')->name('orders.store');
 
-    Route::get('/', fn() => view('admin.dashboard'))->name('dashboard');
+Route::get(
+    '/driver/orders',
+    [OrderController::class, 'driverOrders']
+)->middleware('auth');
 
-    Route::get('/driver', fn() => view('admin.driver'))->name('driver');
+Route::post(
+    '/driver/order/{id}/accept',
+    [OrderController::class, 'acceptOrder']
+);
 
-    Route::get('/user', fn() => view('admin.user'))->name('user');
+Route::post(
+    '/driver/order/{id}/status',
+    [OrderController::class, 'updateStatus']
+)->name('driver.updateStatus');
 
-    Route::get('/pembayaran', fn() => view('admin.pembayaran'))->name('pembayaran');
+Route::get(
+    '/user/order/{id}',
+    [OrderController::class, 'detailUserOrder']
+)->name('orders.detail');
 
-    Route::get('/rating-feedback', fn() => view('admin.rating_feedback'))->name('rating_feedback');
 
-    Route::get('/pengaturan', fn() => view('admin.pengaturan'))->name('pengaturan');
 
-    Route::get('/pesanan', fn() => view('admin.pesanan'))->name('pesanan');
-});
+Route::get('/driver/profile', fn() => view('driver.profile'))
+    ->name('driver.profile');
+
+
+use App\Http\Controllers\RatingController;
+
+Route::get('/driver/rating', [RatingController::class, 'index'])
+    ->middleware(['auth', 'role:driver'])
+    ->name('driver.rating');
+
+Route::post('/user/rating/{id}', [RatingController::class, 'store'])
+    ->middleware('auth')
+    ->name('user.rating.store');
+
+Route::get('/driver/review/{id}', [RatingController::class, 'show'])
+    ->middleware(['auth', 'role:driver'])
+    ->name('driver.review.detail');
+
+/*
+|--------------------------------------------------------------------------
+| REMOVE BREEZE AUTH
+|--------------------------------------------------------------------------
+*/
+
+require __DIR__ . '/auth.php';

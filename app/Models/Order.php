@@ -12,46 +12,44 @@ class Order extends Model
         'kendaraan_id',
         'alamat_asal',
         'alamat_tujuan',
+        'pickup_lat',
+        'pickup_lng',
+        'tujuan_lat',
+        'tujuan_lng',
         'jarak_km',
         'harga',
         'status'
     ];
-    
+
     public function isSelesai()
     {
-        return $this->status === 'selesai';
+        return $this->status === 'completed';
     }
-    //Relasi ke User (pemesan)
+
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    //Relasi ke Driver
     public function driver()
     {
         return $this->belongsTo(Driver::class);
     }
 
-    //Relasi ke Kendaraan
     public function kendaraan()
     {
         return $this->belongsTo(Kendaraan::class);
     }
 
-    //Relasi ke Transaksi
     public function transaksi()
     {
         return $this->hasOne(Transaksi::class);
     }
 
-    //Relasi ke Pesan (chat)
     public function pesan()
     {
         return $this->hasMany(Pesan::class);
     }
-
-    //Relasi ke Rating 
 
     public function rating()
     {
