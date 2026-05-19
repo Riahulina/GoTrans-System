@@ -13,7 +13,7 @@
                     <div class="profile-top">
 
                         <!-- FOTO -->
-                        <img src="https://i.pravatar.cc/150?img=12" class="profile-img" alt="Profile">
+                        <img src="" class="profile-img" alt="Profile">
 
                         <!-- INFO -->
                         <div class="profile-info">

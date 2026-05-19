@@ -292,14 +292,22 @@ Route::get('/driver/rating', [RatingController::class, 'index'])
     ->middleware(['auth', 'role:driver'])
     ->name('driver.rating');
 
+
+// HALAMAN FORM RATING
+Route::get('/user/rating/{id}', [RatingController::class, 'create'])
+    ->middleware(['auth', 'role:user'])
+    ->name('user.rating');
+
+
+// SIMPAN RATING
 Route::post('/user/rating/{id}', [RatingController::class, 'store'])
-    ->middleware('auth')
+    ->middleware(['auth', 'role:user'])
     ->name('user.rating.store');
+
 
 Route::get('/driver/review/{id}', [RatingController::class, 'show'])
     ->middleware(['auth', 'role:driver'])
     ->name('driver.review.detail');
-
 /*
 |--------------------------------------------------------------------------
 | REMOVE BREEZE AUTH

@@ -9,8 +9,8 @@
                 <div class="profile-card">
                     <div class="profile-top">
 
-                        <img src="{{ Auth::user()->foto ? asset('storage/' . Auth::user()->foto) : 'https://i.pravatar.cc/150' }}"
-                            class="profile-img" alt="Profile">
+                        <img src="{{ Auth::user()->foto ? asset('storage/' . Auth::user()->foto) : '' }}" class="profile-img"
+                            alt="Profile">
 
                         <div class="profile-info">
                             <h4>{{ Auth::user()->nama }}</h4>

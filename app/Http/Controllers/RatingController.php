@@ -23,6 +23,14 @@ class RatingController extends Controller
         return view('driver.rating', compact('ratings', 'avgRating'));
     }
 
+    public function create($id)
+    {
+        $order = Order::with(['driver', 'user'])
+            ->findOrFail($id);
+
+        return view('user.rating', compact('order'));
+    }
+
     /**
      * SIMPAN RATING DARI USER
      */

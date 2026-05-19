@@ -15,58 +15,40 @@
         <div class="mb-3">
             <label class="form-label">Foto Profil</label><br>
 
-            <img
-                src="{{ $user->foto ? asset('storage/' . $user->foto) : 'https://i.pravatar.cc/150' }}"
-                class="rounded-circle mb-2"
-                width="70"
-                height="70"
-                style="object-fit: cover;">
+            <img src="{{ $user->foto ? asset('storage/' . $user->foto) : '' }}" class="rounded-circle mb-2" width="70"
+                height="70" style="object-fit: cover;">
 
             <input type="file" name="foto" class="form-control mt-2">
 
             @error('foto')
-            <small class="text-danger">{{ $message }}</small>
+                <small class="text-danger">{{ $message }}</small>
             @enderror
         </div>
 
         <!-- NAMA -->
         <div class="mb-3">
             <label class="form-label">Nama</label>
-            <input
-                name="nama"
-                type="text"
-                class="form-control"
-                value="{{ old('nama', $user->nama) }}"
-                required>
+            <input name="nama" type="text" class="form-control" value="{{ old('nama', $user->nama) }}" required>
             @error('nama')
-            <small class="text-danger">{{ $message }}</small>
+                <small class="text-danger">{{ $message }}</small>
             @enderror
         </div>
 
         <!-- EMAIL -->
         <div class="mb-3">
             <label class="form-label">Email</label>
-            <input
-                name="email"
-                type="email"
-                class="form-control"
-                value="{{ old('email', $user->email) }}"
-                required>
+            <input name="email" type="email" class="form-control" value="{{ old('email', $user->email) }}" required>
             @error('email')
-            <small class="text-danger">{{ $message }}</small>
+                <small class="text-danger">{{ $message }}</small>
             @enderror
         </div>
 
         <!-- NO HP -->
         <div class="mb-3">
             <label class="form-label">No HP</label>
-            <input
-                name="no_hp"
-                type="text"
-                class="form-control"
-                value="{{ old('no_hp', $user->no_hp) }}">
+            <input name="no_hp" type="text" class="form-control" value="{{ old('no_hp', $user->no_hp) }}">
             @error('no_hp')
-            <small class="text-danger">{{ $message }}</small>
+                <small class="text-danger">{{ $message }}</small>
             @enderror
         </div>
 
@@ -77,9 +59,9 @@
             </button>
 
             @if (session('status') === 'profile-updated')
-            <small class="text-success">
-                Data berhasil disimpan.
-            </small>
+                <small class="text-success">
+                    Data berhasil disimpan.
+                </small>
             @endif
         </div>
 

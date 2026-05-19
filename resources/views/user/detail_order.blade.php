@@ -141,10 +141,11 @@
 
                 @if ($order->status == 'completed')
                     <a href="{{ route('user.rating', $order->id) }}" class="btn btn-warning w-100 mt-3 rounded-4 fw-bold">
+
                         ⭐ Rate Driver
+
                     </a>
                 @endif
-
             </div>
 
         </div>
